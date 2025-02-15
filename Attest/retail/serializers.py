@@ -17,23 +17,22 @@ class NetworkNodeSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'email', 'country', 'city',
             'street', 'house_number', 'products', 'supplier',
-            'debt', 'created_at', 'level'
+            'debt', 'level', 'created_at'
         ]
-        read_only_fields = ['debt', 'created_at', 'level']
 
-    def get_level(self, obj):
-        return obj.level
+    #def get_level(self, obj):
+    #    return obj.level
 
     def validate_supplier(self, value):
         if self.instance and value == self.instance:
-            raise serializers.ValidationError("Cannot be supplier to yourself")
+            raise serializers.ValidationError("Нельзя быть поставщиком самого себя")
         return value
 
-    def validate(self, data):
-        supplier = data.get('supplier')
-        if supplier and supplier.level >= 2:
-            raise serializers.ValidationError("Supplier level must be less than 2")
-        return data
+    #def validate(self, data):
+    #    supplier = data.get('supplier')
+    #    if supplier and supplier.level >= 2:
+    #        raise serializers.ValidationError("Уровень поставщика не может быть больше 2")
+    #    return data
 
     def create(self, validated_data):
         products_data = validated_data.pop('products')
